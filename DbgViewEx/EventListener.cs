@@ -25,13 +25,26 @@ namespace DbgViewEx
     public static class EventListener
 	{
         public static TraceEventSession session = null;
+
+        public static void EventCallback(TraceEvent e)
+        {
+            EventData eventData = new EventData();
+            eventData.EventIndex = e.EventIndex.ToString();
+            eventData.EventName = e.EventName;
+            eventData.ProcessID = e.ProcessID.ToString();
+            eventData.Summary = JsonConvert.SerializeObject(e);
+
+            Main.main.AddEvent(eventData);
+        }
+
         public static void Initialize()
 		{
-            session = new TraceEventSession(Environment.OSVersion.Version.Build >= 9200 ? "MyKernelSession" : KernelTraceEventParser.KernelSessionName);
-            session.EnableKernelProvider(KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.ImageLoad);
+            session = new TraceEventSession(KernelTraceEventParser.KernelSessionName);
+            session.EnableKernelProvider(KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.ImageLoad | KernelTraceEventParser.Keywords.Registry | KernelTraceEventParser.Keywords.Driver);
 
             var parser = session.Source.Kernel;
-            parser.ImageLoad += e => {
+            parser.All += e =>
+            {
                 EventData eventData = new EventData();
                 eventData.EventIndex = e.EventIndex.ToString();
                 eventData.EventName = e.EventName;
@@ -55,7 +68,7 @@ namespace DbgViewEx
             session = null;
         }
 
-        public static void Process()
+        public static void ProcessNewData()
 		{
 			Main.main.RefreshETWLog();
         }

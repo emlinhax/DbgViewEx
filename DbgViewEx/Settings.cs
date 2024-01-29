@@ -10,7 +10,8 @@ namespace DbgViewEx
     {
         NONE,
         EVENT_NAME,
-        PROCESS_ID
+        PROCESS_ID,
+        SUMMARY
     }
 
     public enum EFilterCondition

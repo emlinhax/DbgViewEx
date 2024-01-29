@@ -68,22 +68,20 @@ namespace DbgViewEx
             Queue<ListViewItem> items = new Queue<ListViewItem>(); ;
             foreach(EventData e in PendingEventsToBeAdded.ToArray())
             {
-                //Console.WriteLine(e.ToString());
-                string eventIndex = e.EventIndex.ToString();
-                string eventName = e.EventName;
-                string processId = e.ProcessID.ToString();
-                //try { processId = e.ProcessID.ToString(); } catch {}
-
                 if (Settings.filter.Subject != EFilterSubject.NONE)
                 {
                     switch (Settings.filter.Subject)
                     {
                         case EFilterSubject.EVENT_NAME:
-                            if (!PerformConditionCheck(Settings.filter.Action, Settings.filter.Condition, eventName, Settings.filter.Value))
+                            if (!PerformConditionCheck(Settings.filter.Action, Settings.filter.Condition, e.EventName, Settings.filter.Value))
                                 continue;
                             break;
                         case EFilterSubject.PROCESS_ID:
-                            if (!PerformConditionCheck(Settings.filter.Action, Settings.filter.Condition, processId, Settings.filter.Value))
+                            if (!PerformConditionCheck(Settings.filter.Action, Settings.filter.Condition, e.ProcessID, Settings.filter.Value))
+                                continue;
+                            break;
+                        case EFilterSubject.SUMMARY:
+                            if (!PerformConditionCheck(Settings.filter.Action, Settings.filter.Condition, e.Summary, Settings.filter.Value))
                                 continue;
                             break;
                         default:
@@ -91,7 +89,7 @@ namespace DbgViewEx
                     }
                 }
 
-                ListViewItem item = MakeListViewItemFromData(eventIndex, eventName, processId, e.Summary);
+                ListViewItem item = MakeListViewItemFromData(e.EventIndex, e.EventName, e.ProcessID, e.Summary);
                 items.Enqueue(item);
             }
 
@@ -102,7 +100,7 @@ namespace DbgViewEx
         private void ETW_ProcessTimer_Tick(object sender, EventArgs e)
         {
             ETW_ProcessTimer.Interval = TOOLBAR_Settings_Refresh_0_5.Checked ? 500 : (TOOLBAR_Settings_Refresh_1.Checked ? 1000 : (TOOLBAR_Settings_Refresh_5.Checked ? 5000 : 1000));
-            EventListener.Process();
+            EventListener.ProcessNewData();
         }
 
         private void TOOLBAR_Settings_Refresh_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)

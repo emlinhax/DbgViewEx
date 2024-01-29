@@ -43,6 +43,7 @@ namespace DbgViewEx
         {
             FILTER_Subject.Items.Add(new ComboBoxItem("Event Name", EFilterSubject.EVENT_NAME));
             FILTER_Subject.Items.Add(new ComboBoxItem("Process ID",EFilterSubject.PROCESS_ID ));
+            FILTER_Subject.Items.Add(new ComboBoxItem("Summary", EFilterSubject.SUMMARY));
 
             FILTER_Condition.Items.Add(new ComboBoxItem("equals",EFilterCondition.EQUALS));
             FILTER_Condition.Items.Add(new ComboBoxItem("contains", EFilterCondition.CONTAINS ));
