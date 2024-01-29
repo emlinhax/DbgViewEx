@@ -1,0 +1,12 @@
+
+*.vsidx
+*.dll
+*.exe
+*.pdb
+*.xml
+.vs/DbgViewEx/v17/.suo
+*.cache
+*.CopyComplete
+packages/*
+DbgViewEx/bin
+DbgViewEx/obj
