@@ -1,6 +1,8 @@
 using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Parsers;
+using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
 using Microsoft.Diagnostics.Tracing.Session;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,25 +10,54 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace DbgViewEx
 {
-	public static class EventListener
+    public class EventData
+    {
+        public string EventIndex;
+        public string EventName;
+        public string ProcessID;
+        public string Summary;
+    }
+
+    public static class EventListener
 	{
-		public static void Initialize()
+        public static TraceEventSession session = null;
+        public static void Initialize()
 		{
-			using (var session = new TraceEventSession(KernelTraceEventParser.KernelSessionName))
-			{
-				session.EnableKernelProvider(KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.ImageLoad);
-				var parser = session.Source.Kernel;
+            session = new TraceEventSession(Environment.OSVersion.Version.Build >= 9200 ? "MyKernelSession" : KernelTraceEventParser.KernelSessionName);
+            session.EnableKernelProvider(KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.ImageLoad);
 
-				parser.ImageLoad += e => {
-					Main.main.AddEvent(e);
-				};
+            var parser = session.Source.Kernel;
+            parser.ImageLoad += e => {
+                EventData eventData = new EventData();
+                eventData.EventIndex = e.EventIndex.ToString();
+                eventData.EventName = e.EventName;
+                eventData.ProcessID = e.ProcessID.ToString();
+                eventData.Summary = JsonConvert.SerializeObject(e);
 
-				Task.Run(() => session.Source.Process());
-				//Thread.Sleep(TimeSpan.FromSeconds(5));
-			}
-		}
+                Main.main.AddEvent(eventData);
+            };
+        }
+
+        public static void Start()
+        {
+            Initialize();
+            Task.Run(() => session.Source.Process());
+        }
+
+        public static void Stop()
+        {
+            session.Stop();
+            session.Dispose();
+            session = null;
+        }
+
+        public static void Process()
+		{
+			Main.main.RefreshETWLog();
+        }
 	}
 }
