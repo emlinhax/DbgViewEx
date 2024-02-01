@@ -165,7 +165,7 @@ namespace DbgViewEx
             {
                 EventData selectedEvent = (EventData)ETW_List.SelectedItems[0].Tag;
                 EventDetails detailsForm = new EventDetails();
-                detailsForm.ProcessDetails(JObject.Parse(selectedEvent.Summary).ToString());
+                detailsForm.ProcessDetails(selectedEvent);
                 detailsForm.Show();
             }
         }

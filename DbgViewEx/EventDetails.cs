@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,9 +23,10 @@ namespace DbgViewEx
 
         }
 
-        public void ProcessDetails(string json)
+        public void ProcessDetails(EventData eventData)
         {
-            ED_RawJson.Text = json;
+            ED_RawJson.Text = JObject.Parse(eventData.Summary).ToString();
+            //ED_Stacktrace.Text = eventData.StackTrace;
         }
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.Diagnostics.Tracing;
+using Microsoft.Diagnostics.Tracing.Etlx;
 using Microsoft.Diagnostics.Tracing.Parsers;
 using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
 using Microsoft.Diagnostics.Tracing.Session;
@@ -20,6 +21,7 @@ namespace DbgViewEx
         public string EventName;
         public string ProcessID;
         public string Summary;
+        public string StackTrace;
     }
 
     public static class EventListener
@@ -50,6 +52,7 @@ namespace DbgViewEx
                 eventData.EventName = e.EventName;
                 eventData.ProcessID = e.ProcessID.ToString();
                 eventData.Summary = JsonConvert.SerializeObject(e);
+                //eventData.StackTrace = e.CallStack().ToString();
 
                 Main.main.AddEvent(eventData);
             };
