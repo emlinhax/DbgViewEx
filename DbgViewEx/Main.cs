@@ -1,5 +1,6 @@
 ﻿using Microsoft.Diagnostics.Tracing;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,12 +37,13 @@ namespace DbgViewEx
             PendingEventsToBeAdded.Add(e);            
         }
 
-        public ListViewItem MakeListViewItemFromData(string eventIndex, string eventName, string processId, string summary)
+        public ListViewItem MakeListViewItemFromData(string eventIndex, string eventName, string processId, string summary, EventData eventData)
         {
             ListViewItem eventListItem = new ListViewItem(eventIndex);
             eventListItem.SubItems.Add(eventName);
             eventListItem.SubItems.Add(processId);
             eventListItem.SubItems.Add(summary);
+            eventListItem.Tag = eventData;
             return eventListItem;
         }
 
@@ -89,7 +91,7 @@ namespace DbgViewEx
                     }
                 }
 
-                ListViewItem item = MakeListViewItemFromData(e.EventIndex, e.EventName, e.ProcessID, e.Summary);
+                ListViewItem item = MakeListViewItemFromData(e.EventIndex, e.EventName, e.ProcessID, e.Summary, e);
                 items.Enqueue(item);
             }
 
@@ -155,6 +157,17 @@ namespace DbgViewEx
         {
             ETW_ProcessTimer.Stop();
             EventListener.Stop();
+        }
+
+        private void ETW_List_DoubleClick(object sender, EventArgs e)
+        {
+            if(ETW_List.SelectedItems.Count > 0)
+            {
+                EventData selectedEvent = (EventData)ETW_List.SelectedItems[0].Tag;
+                EventDetails detailsForm = new EventDetails();
+                detailsForm.ProcessDetails(JObject.Parse(selectedEvent.Summary).ToString());
+                detailsForm.Show();
+            }
         }
     }
 }

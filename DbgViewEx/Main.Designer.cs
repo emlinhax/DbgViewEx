@@ -37,6 +37,7 @@
             this.ETW_COL_Summary = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TAB_CONTROL = new System.Windows.Forms.TabControl();
             this.TAB_CONTROL__ETW = new System.Windows.Forms.TabPage();
+            this.ETW_RIB_Stop = new System.Windows.Forms.Button();
             this.ETW_RIB_Start = new System.Windows.Forms.Button();
             this.ETW_RIB_Filter = new System.Windows.Forms.Button();
             this.TAB_CONTROL__DBGLOG = new System.Windows.Forms.TabPage();
@@ -50,7 +51,6 @@
             this.TOOLBAR_Settings_Refresh_0_5 = new System.Windows.Forms.ToolStripMenuItem();
             this.TOOLBAR_Settings_Refresh_1 = new System.Windows.Forms.ToolStripMenuItem();
             this.TOOLBAR_Settings_Refresh_5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.ETW_RIB_Stop = new System.Windows.Forms.Button();
             this.TAB_CONTROL.SuspendLayout();
             this.TAB_CONTROL__ETW.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -76,6 +76,7 @@
             this.ETW_List.TabIndex = 1;
             this.ETW_List.UseCompatibleStateImageBehavior = false;
             this.ETW_List.View = System.Windows.Forms.View.Details;
+            this.ETW_List.DoubleClick += new System.EventHandler(this.ETW_List_DoubleClick);
             // 
             // ETW_COL_EventIndex
             // 
@@ -123,6 +124,20 @@
             this.TAB_CONTROL__ETW.TabIndex = 0;
             this.TAB_CONTROL__ETW.Text = "Event Tracing";
             this.TAB_CONTROL__ETW.UseVisualStyleBackColor = true;
+            // 
+            // ETW_RIB_Stop
+            // 
+            this.ETW_RIB_Stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ETW_RIB_Stop.ForeColor = System.Drawing.Color.Gray;
+            this.ETW_RIB_Stop.Image = ((System.Drawing.Image)(resources.GetObject("ETW_RIB_Stop.Image")));
+            this.ETW_RIB_Stop.Location = new System.Drawing.Point(54, 5);
+            this.ETW_RIB_Stop.Margin = new System.Windows.Forms.Padding(0);
+            this.ETW_RIB_Stop.Name = "ETW_RIB_Stop";
+            this.ETW_RIB_Stop.Size = new System.Drawing.Size(44, 35);
+            this.ETW_RIB_Stop.TabIndex = 5;
+            this.ETW_RIB_Filter_TT.SetToolTip(this.ETW_RIB_Stop, "Open Filter");
+            this.ETW_RIB_Stop.UseVisualStyleBackColor = true;
+            this.ETW_RIB_Stop.Click += new System.EventHandler(this.ETW_RIB_Stop_Click);
             // 
             // ETW_RIB_Start
             // 
@@ -233,20 +248,6 @@
             this.TOOLBAR_Settings_Refresh_5.Name = "TOOLBAR_Settings_Refresh_5";
             this.TOOLBAR_Settings_Refresh_5.Size = new System.Drawing.Size(94, 22);
             this.TOOLBAR_Settings_Refresh_5.Text = "5s";
-            // 
-            // ETW_RIB_Stop
-            // 
-            this.ETW_RIB_Stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ETW_RIB_Stop.ForeColor = System.Drawing.Color.Gray;
-            this.ETW_RIB_Stop.Image = ((System.Drawing.Image)(resources.GetObject("ETW_RIB_Stop.Image")));
-            this.ETW_RIB_Stop.Location = new System.Drawing.Point(54, 5);
-            this.ETW_RIB_Stop.Margin = new System.Windows.Forms.Padding(0);
-            this.ETW_RIB_Stop.Name = "ETW_RIB_Stop";
-            this.ETW_RIB_Stop.Size = new System.Drawing.Size(44, 35);
-            this.ETW_RIB_Stop.TabIndex = 5;
-            this.ETW_RIB_Filter_TT.SetToolTip(this.ETW_RIB_Stop, "Open Filter");
-            this.ETW_RIB_Stop.UseVisualStyleBackColor = true;
-            this.ETW_RIB_Stop.Click += new System.EventHandler(this.ETW_RIB_Stop_Click);
             // 
             // Main
             // 
